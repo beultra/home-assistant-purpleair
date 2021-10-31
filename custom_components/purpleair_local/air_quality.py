@@ -25,8 +25,7 @@ class PurpleAirQuality(AirQualityEntity):
         self._hass = hass
         self._node_id = data['id']
         self._title = data['title']
-        self._key = data['key'] if 'key' in data else None
-        self._hidden = data['hidden'] if 'hidden' in data else False
+        self._ip = data['ip']
 
         self._api = hass.data[DOMAIN]
         self._stop_listening = None
@@ -52,16 +51,8 @@ class PurpleAirQuality(AirQualityEntity):
         return self._title
 
     @property
-    def particulate_matter_1_0(self):
-        return self._api.get_reading(self._node_id, 'pm1_0_atm')
-
-    @property
     def particulate_matter_2_5(self):
         return self._api.get_reading(self._node_id, 'pm2_5_atm')
-
-    @property
-    def particulate_matter_10(self):
-        return self._api.get_reading(self._node_id, 'pm10_0_atm')
 
     @property
     def humidity(self):
@@ -83,15 +74,12 @@ class PurpleAirQuality(AirQualityEntity):
     def state_attributes(self):
         attributes = super().state_attributes
         air_quality_index_epa = self.air_quality_index_epa
-        pm1_0 = self.particulate_matter_1_0
         humidity = self.humidity
         temp_f = self.temp_f
         pressure = self.pressure
-        
+
         if air_quality_index_epa:
             attributes['air_quality_index_epa'] = air_quality_index_epa
-        if pm1_0:
-            attributes['particulate_matter_1_0'] = pm1_0
         if humidity:
             attributes['humidity'] = humidity
         if temp_f:
@@ -108,7 +96,7 @@ class PurpleAirQuality(AirQualityEntity):
     async def async_added_to_hass(self):
         _LOGGER.debug('registering with node_id: %s', self._node_id)
 
-        self._api.register_node(self._node_id, self._hidden, self._key)
+        self._api.register_node(self._node_id, self._title, self._ip)
         self._stop_listening = async_dispatcher_connect(
             self._hass,
             DISPATCHER_PURPLE_AIR_LOCAL,

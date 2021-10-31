@@ -6,7 +6,7 @@ from homeassistant import config_entries, core, exceptions
 from homeassistant.const import CONF_IP_ADDRESS, CONF_NAME
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN
+from .const import DOMAIN, LOCAL_URL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ async def validate_input(hass: core.HomeAssistant, data):
 
         json = await resp.json()
 
-    node_id = str(json['Id'])
+    node_id = str(json['SensorId'])
     config = {
         'title': data[CONF_NAME],
         'id': node_id,

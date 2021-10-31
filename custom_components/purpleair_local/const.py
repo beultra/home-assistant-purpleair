@@ -19,4 +19,4 @@ DOMAIN = "purpleair_local"
 
 SCAN_INTERVAL = 60
 
-LOCAL_URL = "http:{ip}/json?live=true"
+LOCAL_URL = "http://{ip}/json?live=true"
