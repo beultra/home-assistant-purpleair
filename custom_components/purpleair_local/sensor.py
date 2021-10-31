@@ -7,7 +7,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import Entity
 
-from .const import DISPATCHER_PURPLE_AIR, DOMAIN
+from .const import DISPATCHER_PURPLE_AIR_LOCAL, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -30,7 +30,7 @@ class PurpleAirQualityIndex(Entity):
 
     @property
     def attribution(self):
-        return 'Data provided by PurpleAir'
+        return 'Data provided by local sensors'
 
     @property
     def available(self):
@@ -63,7 +63,7 @@ class PurpleAirQualityIndex(Entity):
     async def async_added_to_hass(self):
         self._stop_listening = async_dispatcher_connect(
             self._hass,
-            DISPATCHER_PURPLE_AIR,
+            DISPATCHER_PURPLE_AIR_LOCAL,
             self.async_write_ha_state
         )
 

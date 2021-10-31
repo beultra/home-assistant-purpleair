@@ -1,6 +1,6 @@
 {
-  "domain": "purpleair",
-  "name": "PurpleAir",
+  "domain": "purpleair_local",
+  "name": "PurpleAirLocal",
   "version": "1.1.1",
   "iot_class": "cloud_polling",
   "config_flow": true,
@@ -11,6 +11,6 @@
   "homekit": {},
   "dependencies": [],
   "codeowners": [
-    "@gibwar"
+    "@bej"
   ]
 }

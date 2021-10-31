@@ -13,14 +13,10 @@ AQI_BREAKPOINTS = {
     ],
 }
 
-DISPATCHER_PURPLE_AIR = 'dispatcher_purple_air'
+DISPATCHER_PURPLE_AIR_LOCAL = 'dispatcher_purple_air_local'
 
-DOMAIN = "purpleair"
+DOMAIN = "purpleair_local"
 
-JSON_PROPERTIES = ['pm1_0_atm', 'pm2_5_atm', 'pm10_0_atm', 'humidity', 'temp_f', 'pressure']
+SCAN_INTERVAL = 60
 
-SCAN_INTERVAL = 300
-
-PUBLIC_URL = "https://www.purpleair.com/json?show={nodes}"
-
-PRIVATE_URL = "https://www.purpleair.com/json?show={nodes}&key={key}"
+LOCAL_URL = "http:{ip}/json?live=true"

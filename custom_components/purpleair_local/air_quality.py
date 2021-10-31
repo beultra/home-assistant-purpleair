@@ -7,7 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from .const import DISPATCHER_PURPLE_AIR, DOMAIN
+from .const import DISPATCHER_PURPLE_AIR_LOCAL, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ class PurpleAirQuality(AirQualityEntity):
 
     @property
     def attribution(self):
-        return 'Data provided by PurpleAir'
+        return 'Data provided by local sensors'
 
     @property
     def available(self):
@@ -111,7 +111,7 @@ class PurpleAirQuality(AirQualityEntity):
         self._api.register_node(self._node_id, self._hidden, self._key)
         self._stop_listening = async_dispatcher_connect(
             self._hass,
-            DISPATCHER_PURPLE_AIR,
+            DISPATCHER_PURPLE_AIR_LOCAL,
             self.async_write_ha_state
         )
 

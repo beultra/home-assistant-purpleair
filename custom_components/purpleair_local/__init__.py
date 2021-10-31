@@ -1,4 +1,4 @@
-"""The PurpleAir integration."""
+"""The PurpleAir local integration."""
 import asyncio
 from datetime import timedelta
 import logging
@@ -10,7 +10,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
-from .PurpleAirApi import PurpleAirApi
+from .PurpleAirLocal import PurpleAirLocal
 
 PLATFORMS = ["air_quality", "sensor"]
 
@@ -21,7 +21,7 @@ async def async_setup(hass: HomeAssistant, config: dict):
     """Set up the PurpleAir component."""
     session = async_get_clientsession(hass)
 
-    hass.data[DOMAIN] = PurpleAirApi(hass, session)
+    hass.data[DOMAIN] = PurpleAirLocal(hass, session)
 
     return True
 

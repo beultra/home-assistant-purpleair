@@ -3,7 +3,7 @@ import logging
 import voluptuous as vol
 
 from homeassistant import config_entries, core, exceptions
-from homeassistant.const import CONF_URL
+from homeassistant.const import CONF_IP_ADDRESS, CONF_NAME
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN
@@ -19,7 +19,7 @@ async def validate_input(hass: core.HomeAssistant, data):
 
     json = {}
     client = async_get_clientsession(hass)
-    url = data['url']
+    url = LOCAL_URL.format(ip=data[CONF_IP_ADDRESS])
     _LOGGER.debug('using url: %s', url)
     async with client.get(url) as resp:
         if not resp.status == 200:
@@ -27,16 +27,11 @@ async def validate_input(hass: core.HomeAssistant, data):
 
         json = await resp.json()
 
-    node = json['results'][0]
-    node_id = str(node['ID'])
-    if ('ParentID' in node):
-        node_id = str(node['ParentID'])
-
+    node_id = str(json['Id'])
     config = {
-        'title': node['Label'],
+        'title': data[CONF_NAME],
         'id': node_id,
-        'hidden': node['Hidden'] == 'true',
-        'key': node['THINGSPEAK_PRIMARY_ID_READ_KEY'],
+        'ip': data[CONF_IP_ADDRESS],
     }
 
     _LOGGER.debug('generated config data: %s', config)
@@ -70,7 +65,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         data_schema = vol.Schema(
             {
-                vol.Required(CONF_URL): str,
+                vol.Required(CONF_NAME): str,
+                vol.Required(CONF_IP_ADDRESS): str,
             }
         )
 
